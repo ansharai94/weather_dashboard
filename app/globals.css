@@ -1,26 +1,121 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  /* Light mode colors */
+  --color-background: oklch(100% 0 0);
+  --color-foreground: oklch(15.5% 0 0);
+  --color-card: oklch(100% 0 0);
+  --color-card-foreground: oklch(15.5% 0 0);
+  --color-popover: oklch(100% 0 0);
+  --color-popover-foreground: oklch(15.5% 0 0);
+  --color-primary: oklch(35.5% 0 0);
+  --color-primary-foreground: oklch(98% 0 0);
+  --color-secondary: oklch(96.1% 0 0);
+  --color-secondary-foreground: oklch(35.5% 0 0);
+  --color-muted: oklch(96.1% 0 0);
+  --color-muted-foreground: oklch(64.1% 0 0);
+  --color-accent: oklch(96.1% 0 0);
+  --color-accent-foreground: oklch(35.5% 0 0);
+  --color-destructive: oklch(68.35% 0.199 27.33);
+  --color-destructive-foreground: oklch(98% 0 0);
+  --color-border: oklch(89.8% 0 0);
+  --color-input: oklch(89.8% 0 0);
+  --color-ring: oklch(15.5% 0 0);
+
+  /* Chart Colors */
+  --color-chart-1: oklch(68.43% 0.142 41.58);
+  --color-chart-2: oklch(54.3% 0.078 180.77);
+  --color-chart-3: oklch(37.45% 0.049 212.97);
+  --color-chart-4: oklch(75.22% 0.118 86.72);
+  --color-chart-5: oklch(73.53% 0.158 53.64);
+
+  /* Sidebar Colors */
+  --color-sidebar-background: oklch(98% 0.001 240);
+  --color-sidebar-foreground: oklch(45.9% 0.022 240);
+  --color-sidebar-primary: oklch(29.8% 0.025 240);
+  --color-sidebar-primary-foreground: oklch(98% 0 0);
+  --color-sidebar-accent: oklch(95.9% 0.004 240);
+  --color-sidebar-accent-foreground: oklch(29.8% 0.025 240);
+  --color-sidebar-border: oklch(91% 0.013 220);
+  --color-sidebar-ring: oklch(71.47% 0.169 217.2);
+
+  /* Border Radius */
+  --radius: 0.5rem;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+/* Dark mode using @variant dark */
+@layer base {
+  @variant dark {
+    --color-background: oklch(15.5% 0 0);
+    --color-foreground: oklch(98% 0 0);
+    --color-card: oklch(15.5% 0 0);
+    --color-card-foreground: oklch(98% 0 0);
+    --color-popover: oklch(15.5% 0 0);
+    --color-popover-foreground: oklch(98% 0 0);
+    --color-primary: oklch(98% 0 0);
+    --color-primary-foreground: oklch(35.5% 0 0);
+    --color-secondary: oklch(34.9% 0 0);
+    --color-secondary-foreground: oklch(98% 0 0);
+    --color-muted: oklch(34.9% 0 0);
+    --color-muted-foreground: oklch(73.9% 0 0);
+    --color-accent: oklch(34.9% 0 0);
+    --color-accent-foreground: oklch(98% 0 0);
+    --color-destructive: oklch(45.85% 0.089 27.33);
+    --color-destructive-foreground: oklch(98% 0 0);
+    --color-border: oklch(34.9% 0 0);
+    --color-input: oklch(34.9% 0 0);
+    --color-ring: oklch(88.1% 0 0);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    /* Dark Chart Colors */
+    --color-chart-1: oklch(59.18% 0.121 265.75);
+    --color-chart-2: oklch(53.2% 0.086 171.3);
+    --color-chart-3: oklch(66.84% 0.124 85.87);
+    --color-chart-4: oklch(69.75% 0.125 307.89);
+    --color-chart-5: oklch(66.37% 0.135 12.57);
+
+    /* Dark Sidebar Colors */
+    --color-sidebar-background: oklch(29.8% 0.025 240);
+    --color-sidebar-foreground: oklch(95.9% 0.004 240);
+    --color-sidebar-primary: oklch(62.75% 0.196 258.55);
+    --color-sidebar-primary-foreground: oklch(100% 0 0);
+    --color-sidebar-accent: oklch(25.9% 0.015 240);
+    --color-sidebar-accent-foreground: oklch(95.9% 0.004 240);
+    --color-sidebar-border: oklch(25.9% 0.015 240);
+    --color-sidebar-ring: oklch(71.47% 0.169 217.2);
   }
 }
 
+/* Base styles */
 body {
-  background: var(--background);
-  color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+}
+
+* {
+  border-color: var(--color-border);
+}
+
+/* Utility classes */
+.text-balance {
+  text-wrap: balance;
+}
+
+/* Animation keyframes */
+@keyframes accordion-down {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+  }
+}
+
+@keyframes accordion-up {
+  from {
+    height: var(--radix-accordion-content-height);
+  }
+  to {
+    height: 0;
+  }
 }
