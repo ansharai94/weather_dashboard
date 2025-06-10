@@ -9,6 +9,7 @@ import { CurrentWeather } from "./current-weather";
 import { WeatherHeader } from "./weather-header";
 import { getWeather } from "@/app/actions/direct-geodecoding";
 import { WeatherForecastResponse } from "@/lib/types";
+import { WeatherAISection } from "./ai/weather-ai-section";
 
 export default function WeatherDashboard() {
   const [searchCity, setSearchCity] = useState("");
@@ -50,10 +51,12 @@ export default function WeatherDashboard() {
           {/* Charts Section */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Temperature Chart */}
-            <TemperatureChart />
+            <TemperatureChart forecastData={weather.hourly} />
             {/* Precipitation Chart */}
-            <PrecipitationChart />
+            <PrecipitationChart forecastData={weather.hourly} />
           </div>
+
+          <WeatherAISection weatherData={weather} forecast={undefined} />
         </>
       )}
     </div>

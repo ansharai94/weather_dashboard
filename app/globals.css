@@ -119,3 +119,54 @@ body {
     height: 0;
   }
 }
+@keyframes slideToInsights {
+  0% {
+    transform: translateX(0) translateY(0) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translateX(300px) translateY(-50px) scale(0.9);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateX(600px) translateY(-100px) scale(0.8);
+    opacity: 0;
+  }
+}
+
+.animate-slide-to-insights {
+  animation: slideToInsights 1.5s ease-in-out forwards;
+}
+
+/* Smooth transitions pentru toate elementele */
+* {
+  transition-property: transform, opacity, background-color, border-color, color,
+    fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+/* Glow effect pentru insights când se actualizează */
+.insights-glow {
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+  transition: box-shadow 0.5s ease-in-out;
+}
+
+/* Improved scrollbar styling */
+.overflow-y-auto::-webkit-scrollbar {
+  width: 6px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  background: rgba(59, 130, 246, 0.3);
+  border-radius: 3px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+  background: rgba(59, 130, 246, 0.5);
+}

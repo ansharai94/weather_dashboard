@@ -153,8 +153,9 @@ export interface DailyWeatherForecast {
 export interface WeatherForecastResponse {
   /** Array-ul cu prognozele zilnice */
   daily: DailyWeatherForecast[];
-    location: string;
+  location: string;
   current: Current;
+  hourly: WeatherHourly[];
 }
 
 // Interface pentru răspunsul complet One Call API (cu toate datele)
@@ -317,31 +318,46 @@ export type WeatherIconCode =
   | "50d"
   | "50n";
 
-export interface
-  current
-: 
-{dt: 1749055332, sunrise: 1749003741, sunset: 1749059449, temp: 24.96, feels_like: 25.03, …}
-daily
-: 
-(8) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
-hourly
-: 
-(48) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
-lat
-: 
-45.2716
-location
-: 
-"Brăila, RO"
-lon
-: 
-27.9743
-minutely
-: 
-(60) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
-timezone
-: 
-"Europe/Bucharest"
-timezone_offset
-: 
-10800
+export interface WeatherHourly {
+  clouds: number;
+  dew_point: number;
+  dt: number;
+  feels_like: number;
+  humidity: number;
+  pop: number;
+  pressure: number;
+  temp: number;
+  uvi: number;
+  visibility: number;
+  weather: WeatherCondition[];
+  wind_deg: number;
+  wind_gust: number;
+  wind_speed: number;
+}
+export interface IAdditionalTips {
+  id: number;
+  type: "priority" | "warning" | "info" | "activity" | "health" | "planning";
+  icon: string;
+  title: string;
+  content: string;
+  confidence: number;
+  bgColor: string;
+  borderColor: string;
+  iconBg: string;
+}
+type Role = "assistant" | "user" | "system";
+
+export interface Recommendation {
+  title: string;
+  text: string;
+}
+export interface Message {
+  id: number;
+  role: Role;
+  content: string;
+  time: string;
+  recommendation?: Recommendation;
+  additional_tips?: IAdditionalTips[];
+  confidence?: string;
+  warning?: string;
+}

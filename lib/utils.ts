@@ -17,7 +17,14 @@ import {
   Moon,
 } from "lucide-react";
 import { twMerge } from "tailwind-merge";
-import { WeatherCondition, WeatherIconMapping } from "./types";
+import {
+  IAdditionalTips,
+  WeatherCondition,
+  WeatherForecastResponse,
+  WeatherHourly,
+  WeatherIconMapping,
+} from "./types";
+import { Recommendation } from "@/components/ai/weather-assistant";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -132,3 +139,228 @@ export const getWeatherDisplay = (weather: WeatherCondition) => {
     main: weather.main,
   };
 };
+
+export function getTime(time: number) {
+  const date = new Date(time * 1000);
+  return date.toLocaleTimeString("ro-RO", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
+export function formatWeatherContext(weatherData: WeatherForecastResponse) {
+  // Formatează DOAR datele relevante pentru AI
+  const relevantData = {
+    location: weatherData.location || "România",
+    current: {
+      temp: Math.round(weatherData.current.temp),
+      feels_like: Math.round(weatherData.current.feels_like),
+      humidity: weatherData.current.humidity,
+      wind_speed: Math.round(weatherData.current.wind_speed * 3.6), // m/s to km/h
+      weather_main: weatherData.current.weather?.[0]?.main,
+      weather_description: weatherData.current.weather?.[0]?.description,
+      visibility: Math.round(weatherData.current.visibility / 1000), // m to km
+      uv_index: weatherData.current.uvi || null,
+    },
+    forecast_6h: getNext6Hours(weatherData.hourly),
+    alerts: getWeatherAlerts(weatherData),
+  };
+  return `CONTEXT METEO ACTUAL:
+📍 Locație: ${relevantData.location}
+🌡️ Temperatura: ${relevantData.current.temp}°C (senzație ${
+    relevantData.current.feels_like
+  }°C)
+💧 Umiditate: ${relevantData.current.humidity}%
+💨 Vânt: ${relevantData.current.wind_speed} km/h
+☁️ Condiții: ${relevantData.current.weather_description}
+👁️ Vizibilitate: ${relevantData.current.visibility} km
+${
+  relevantData.current.uv_index
+    ? `☀️ UV Index: ${relevantData.current.uv_index}`
+    : ""
+}
+
+PROGNOZA URMĂTOARELE 6 ORE:
+${relevantData.forecast_6h
+  .map((hour) => `${hour.time}: ${hour.temp}°C, ${hour.condition}`)
+  .join("\n")}
+
+${
+  relevantData.alerts.length > 0
+    ? `🚨 ALERTE: ${relevantData.alerts.join(", ")}`
+    : ""
+}
+
+Răspunde pe baza acestor date actuale.`;
+}
+
+function getNext6Hours(hourlyData: WeatherHourly[]) {
+  if (!hourlyData) return [];
+
+  return hourlyData.slice(0, 6).map((hour) => ({
+    time: new Date(hour.dt * 1000).toLocaleTimeString("ro-RO", {
+      hour: "2-digit",
+      minute: "2-digit",
+    }),
+    temp: Math.round(hour.temp),
+    condition: hour.weather[0].main,
+    pop: Math.round(hour.pop * 100), // probability of precipitation
+  }));
+}
+
+function getWeatherAlerts(weatherData: WeatherForecastResponse) {
+  const alerts = [];
+
+  // Detectează condiții extreme
+  if (weatherData.current.temp > 35) alerts.push("Căldură extremă");
+  if (weatherData.current.temp < -10) alerts.push("Ger intens");
+  if (weatherData.current.wind_speed > 15) alerts.push("Vânt puternic");
+  if (weatherData.hourly?.some((h) => h.pop > 0.8))
+    alerts.push("Probabilitate mare de precipitații");
+
+  return alerts;
+}
+interface ParseAndValidateJSON {
+  content: string;
+  recommendation: Recommendation;
+  additional_tips: IAdditionalTips[];
+  confidence: string;
+  warning?: string;
+}
+
+export function parseAndValidateJSON(
+  responseText: string | null | undefined
+): ParseAndValidateJSON {
+  try {
+    if (!responseText) {
+      throw new Error();
+    }
+    console.log(responseText, "responseText");
+    const parsed = JSON.parse(responseText);
+
+    // Validare structură obligatorie
+    const requiredFields = [
+      "text",
+      "recommendation",
+      "additional_tips",
+      "confidence",
+    ];
+    const hasRequiredFields = requiredFields.every((field) => field in parsed);
+
+    if (!hasRequiredFields) {
+      throw new Error("JSON response missing required fields");
+    }
+
+    // Validare recommendation structure
+    if (!parsed.recommendation.title || !parsed.recommendation.text) {
+      throw new Error("Invalid recommendation structure");
+    }
+    // Validare additional_tips structure
+    if (!Array.isArray(parsed.additional_tips)) {
+      throw new Error("additional_tips must be an array");
+    }
+    // Validare fiecare tip
+    const requiredTipFields = [
+      "id",
+      "type",
+      "icon",
+      "title",
+      "content",
+      "confidence",
+      "bgColor",
+      "borderColor",
+      "iconBg",
+    ];
+    const validTypes = [
+      "priority",
+      "warning",
+      "info",
+      "activity",
+      "health",
+      "planning",
+    ];
+    parsed.additional_tips.forEach((tip: IAdditionalTips, index: number) => {
+      // Check required fields
+      const missingFields = requiredTipFields.filter(
+        (field) => !(field in tip)
+      );
+      if (missingFields.length > 0) {
+        throw new Error(
+          `Tip ${index} missing fields: ${missingFields.join(", ")}`
+        );
+      }
+
+      // Check valid type
+      if (!validTypes.includes(tip.type)) {
+        throw new Error(
+          `Invalid tip type: ${tip.type}. Must be one of: ${validTypes.join(
+            ", "
+          )}`
+        );
+      }
+
+      // Check confidence range
+      if (tip.confidence < 70 || tip.confidence > 98) {
+        throw new Error(
+          `Invalid confidence: ${tip.confidence}. Must be between 70-98`
+        );
+      }
+    });
+    // Sanitizare și validare
+    return {
+      content: sanitizeText(parsed.text),
+      recommendation: {
+        title: sanitizeText(parsed.recommendation.title),
+        text: sanitizeText(parsed.recommendation.text),
+      },
+      additional_tips: parsed.additional_tips,
+      confidence: parsed.confidence || "85%",
+      warning: parsed.warning ? sanitizeText(parsed.warning) : undefined,
+    };
+  } catch (error) {
+    console.error("JSON parsing error:", error);
+    // Încearcă să extragi text-ul ca fallback
+    return createFallbackResponse(responseText);
+  }
+}
+
+function sanitizeText(text: string) {
+  if (typeof text !== "string") return "";
+
+  return text
+    .trim()
+    .replace(/[\x00-\x1F\x7F]/g, "") // Remove control characters
+    .slice(0, 1000); // Limit length
+}
+export function createFallbackResponse(
+  originalText: string | null | undefined
+): {
+  content: string;
+  recommendation: Recommendation;
+  additional_tips: IAdditionalTips[];
+  confidence: string;
+} {
+  return {
+    content: originalText
+      ? sanitizeText(originalText)
+      : "Răspuns primit, dar în format neașteptat.",
+    recommendation: {
+      title: "🛠️ Eroare tehnică:",
+      text: "Te rog încearcă din nou peste câteva secunde",
+    },
+    additional_tips: [
+      {
+        id: 1,
+        type: "info",
+        icon: "🔧",
+        title: "Reîncercare",
+        content: "Verifică conexiunea și încearcă din nou",
+        confidence: 70,
+        bgColor: "bg-blue-50",
+        borderColor: "border-l-blue-500",
+        iconBg: "bg-white/70",
+      },
+    ],
+    confidence: "0%",
+  };
+}
