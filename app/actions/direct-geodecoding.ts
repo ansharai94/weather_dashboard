@@ -22,14 +22,18 @@ const BASE_URL = "http://api.openweathermap.org";
 
 async function getCoordinatesByCity(city: string) {
   try {
-    const url = `${BASE_URL}/geo/1.0/direct?q=${city}&limit=5&appid=${process.env.WEATHER_DASHBOARD_API}`;
+    const url = `${BASE_URL}/geo/1.0/direct?q=${city}&limit=5&appid=${process.env.WEATHER_DASHBOARD_API}&lang=ro`;
     const response = await fetch(url);
+
     if (response.status !== 200) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const geolocation = (await response.json()) as GeoDecode[];
+    console.log(geolocation, "geolocation");
     const location = geolocation.find((location) => {
-      const normalizedLocation = normalizeDiacritics(location.name);
+      const normalizedLocation = normalizeDiacritics(
+        location.local_names["ro"]
+      );
       return normalizedLocation.toLowerCase() === city.toLowerCase();
     });
     return location;
