@@ -20,11 +20,9 @@ export default function WeatherDashboard() {
   async function handleSearch() {
     if (searchCity) {
       const response = await getWeather(searchCity);
-      console.log(response, "--response in dashboard");
       setWeather(response);
     }
   }
-  console.log(weather, "weather");
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600 p-4">

@@ -235,7 +235,6 @@ export function parseAndValidateJSON(
     if (!responseText) {
       throw new Error();
     }
-    console.log(responseText, "responseText");
     const parsed = JSON.parse(responseText);
 
     // Validare structură obligatorie

@@ -75,7 +75,6 @@ export function WeatherAssistant({
         }),
         ...parsed, // This will spread the parsed JSON properties
       };
-      console.log(aiResponse, "airesponse");
       setMessages((prev) => [...prev, aiResponse]);
     } catch (error) {
       console.error("Error sending message:", error);
@@ -105,7 +104,6 @@ export function WeatherAssistant({
     setInputValue(e.target.value);
   }
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>): void => {
-    console.log(e.key, "-key");
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       handleSendMessage();

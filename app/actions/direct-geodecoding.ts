@@ -29,7 +29,6 @@ async function getCoordinatesByCity(city: string) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const geolocation = (await response.json()) as GeoDecode[];
-    console.log(geolocation, "geolocation");
     const location = geolocation.find((location) => {
       const normalizedLocation = normalizeDiacritics(
         location.local_names["ro"]
@@ -52,7 +51,6 @@ async function getLocationByCoordinates({
   try {
     const url = `${BASE_URL}/data/3.0/onecall?lat=${lat}&lon=${lon}&units=metric&lang=ro&appid=${process.env.WEATHER_DASHBOARD_API}`;
     const response = await fetch(url);
-    console.log(response, "response");
     if (response.status !== 200) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
@@ -66,7 +64,6 @@ async function getLocationByCoordinates({
 export async function getWeather(city: string) {
   const location = await getCoordinatesByCity(city);
   if (location) {
-    console.log(location, "location");
     const weatherByCoordinates = await getLocationByCoordinates({
       lat: location.lat,
       lon: location.lon,

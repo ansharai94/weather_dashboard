@@ -45,8 +45,6 @@ export function WeatherAISection({ weatherData }: WeatherAISection) {
     if (lastMessage?.additional_tips && lastMessage.role === "assistant") {
       // Dacă e un mesaj nou cu insights
       if (previousInsights !== lastMessage.additional_tips) {
-        console.log("🎬 Starting insights animation...");
-
         // Start loading state immediately
         setIsLoadingNewInsights(true);
         setShowInsights(false);
