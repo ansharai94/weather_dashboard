@@ -19,12 +19,12 @@ import {
 import { twMerge } from "tailwind-merge";
 import {
   IAdditionalTips,
+  Recommendation,
   WeatherCondition,
   WeatherForecastResponse,
   WeatherHourly,
   WeatherIconMapping,
 } from "./types";
-import { Recommendation } from "@/components/ai/weather-assistant";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));

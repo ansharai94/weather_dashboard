@@ -56,7 +56,7 @@ export default function WeatherDashboard() {
             <PrecipitationChart forecastData={weather.hourly} />
           </div>
 
-          <WeatherAISection weatherData={weather} forecast={undefined} />
+          <WeatherAISection weatherData={weather} />
         </>
       )}
     </div>
