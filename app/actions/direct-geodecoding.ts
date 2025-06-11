@@ -9,14 +9,16 @@ const normalizeDiacritics = (str: string) => {
     .replace(/[ăâ]/g, "a")
     .replace(/[î]/g, "i");
 };
-interface GeoDecode {
+interface GeoDecode extends Geolocation {
   name: string;
   local_names: {
     [key: string]: string;
   };
+  country: string;
+}
+interface Geolocation {
   lat: number;
   lon: number;
-  country: string;
 }
 const BASE_URL = "http://api.openweathermap.org";
 
@@ -61,7 +63,7 @@ async function getLocationByCoordinates({
     throw error;
   }
 }
-export async function getWeather(city: string) {
+export async function getWeatherByCity(city: string) {
   const location = await getCoordinatesByCity(city);
   if (location) {
     const weatherByCoordinates = await getLocationByCoordinates({
@@ -73,4 +75,28 @@ export async function getWeather(city: string) {
       ...weatherByCoordinates,
     };
   }
+}
+export async function getWeatherByLocation({ lat, lon }: Geolocation) {
+  const weatherByCoordinates = await getLocationByCoordinates({
+    lat,
+    lon,
+  });
+  const location = await getLocationName({ lat, lon });
+  return {
+    location,
+    ...weatherByCoordinates,
+  };
+}
+async function getLocationName({ lat, lon }: Geolocation) {
+  const url = `${BASE_URL}/geo/1.0/reverse?lat=${lat}&lon=${lon}&limit=1&appid=${process.env.WEATHER_DASHBOARD_API}`;
+  const response = await fetch(url);
+  if (response.status !== 200) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  const data = await response.json();
+  console.log(data, "data");
+  if (data.length > 0) {
+    return `${data[0].name}, ${data[0].country}`;
+  }
+  return "Locație necunoscută";
 }
