@@ -149,7 +149,7 @@ export function generatePrecipitationChartProps(
 export function calcEstimatedPrecipitation(
   item: WeatherHourly,
   index: number,
-  precipitationTypes: PrecipitationType[]
+  precipitationTypes: PrecipitationType
 ) {
   const pop = item.pop;
   const type = precipitationTypes[index];
