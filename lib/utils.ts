@@ -151,7 +151,7 @@ export function getTime(time: number) {
 export function formatWeatherContext(weatherData: WeatherForecastResponse) {
   // Formatează DOAR datele relevante pentru AI
   const relevantData = {
-    location: weatherData.location || "România",
+    location: weatherData.location,
     current: {
       temp: Math.round(weatherData.current.temp),
       feels_like: Math.round(weatherData.current.feels_like),
@@ -195,8 +195,6 @@ Răspunde pe baza acestor date actuale.`;
 }
 
 function getNext6Hours(hourlyData: WeatherHourly[]) {
-  if (!hourlyData) return [];
-
   return hourlyData.slice(0, 6).map((hour) => ({
     time: new Date(hour.dt * 1000).toLocaleTimeString("ro-RO", {
       hour: "2-digit",
@@ -236,7 +234,6 @@ export function parseAndValidateJSON(
       throw new Error();
     }
     const parsed = JSON.parse(responseText);
-
     // Validare structură obligatorie
     const requiredFields = [
       "text",
@@ -305,6 +302,7 @@ export function parseAndValidateJSON(
         );
       }
     });
+    console.log(parsed, "parsed");
     // Sanitizare și validare
     return {
       content: sanitizeText(parsed.text),
@@ -313,27 +311,23 @@ export function parseAndValidateJSON(
         text: sanitizeText(parsed.recommendation.text),
       },
       additional_tips: parsed.additional_tips,
-      confidence: parsed.confidence || "85%",
-      warning: parsed.warning ? sanitizeText(parsed.warning) : undefined,
+      confidence: parsed.confidence,
     };
   } catch (error) {
     console.error("JSON parsing error:", error);
     // Încearcă să extragi text-ul ca fallback
-    return createFallbackResponse(responseText);
+    const response = responseText ? JSON.parse(responseText) : "{}";
+    return createFallbackResponse(response.text || "");
   }
 }
 
 function sanitizeText(text: string) {
-  if (typeof text !== "string") return "";
-
   return text
     .trim()
     .replace(/[\x00-\x1F\x7F]/g, "") // Remove control characters
     .slice(0, 1000); // Limit length
 }
-export function createFallbackResponse(
-  originalText: string | null | undefined
-): {
+function createFallbackResponse(originalText: string | null | undefined): {
   content: string;
   recommendation: Recommendation;
   additional_tips: IAdditionalTips[];

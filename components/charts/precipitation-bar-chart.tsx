@@ -27,7 +27,7 @@ ChartJS.register(
   Tooltip,
   Legend
 );
-export function PrecipitationBarCart({ forecastData }: PrecipitationBarCart) {
+export function PrecipitationBarChart({ forecastData }: PrecipitationBarCart) {
   // Procesează datele pentru precipitații
   const {
     labels,
@@ -90,14 +90,14 @@ export function PrecipitationBarCart({ forecastData }: PrecipitationBarCart) {
       <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-3 text-center">
         <div className="bg-blue-50 rounded-lg p-3">
           <div className="text-lg font-bold text-blue-600">
-            {maxProbability.toFixed(0)}%
+            {`${maxProbability.toFixed(0)}%`}
           </div>
           <div className="text-sm text-gray-600">Probabilitate max</div>
         </div>
 
         <div className="bg-blue-50 rounded-lg p-3">
           <div className="text-lg font-bold text-blue-600">
-            {avgProbability.toFixed(0)}%
+            {`${avgProbability.toFixed(0)}%`}
           </div>
           <div className="text-sm text-gray-600">Medie 24h</div>
         </div>
@@ -111,7 +111,7 @@ export function PrecipitationBarCart({ forecastData }: PrecipitationBarCart) {
 
         <div className="bg-blue-50 rounded-lg p-3">
           <div className="text-lg font-bold text-blue-600">
-            ~{totalEstimated.toFixed(1)} mm
+            {`~${totalEstimated.toFixed(1)} mm`}
           </div>
           <div className="text-sm text-gray-600">Total estimat</div>
         </div>

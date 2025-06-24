@@ -1,7 +1,7 @@
 import { Thermometer } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent } from "./ui/card";
 import { WeatherHourly } from "@/lib/types";
-import { TemperatureLineChart } from "./charts/temperature-chart";
+import { TemperatureLineChart } from "./charts/temperature-line-chart";
 
 interface TemperatureChart {
   forecastData: WeatherHourly[];
