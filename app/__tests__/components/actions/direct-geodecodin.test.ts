@@ -2,7 +2,6 @@ import {
   getWeatherByCity,
   getWeatherByLocation,
 } from "@/app/actions/direct-geodecoding";
-import { rejects } from "assert";
 import { vi } from "vitest";
 
 global.fetch = vi.fn();

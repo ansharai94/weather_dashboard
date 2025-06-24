@@ -1,7 +1,6 @@
 import { AnimatedWeatherInsights } from "@/components/ai/animated-weather-insights";
 import { CommonProps, IAdditionalTips, ImportOriginal } from "@/lib/types";
 import { render, screen } from "@testing-library/react";
-import { AnimatePresence } from "framer-motion";
 import { vi } from "vitest";
 
 vi.mock("framer-motion", async (importOriginal: ImportOriginal) => {

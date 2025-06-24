@@ -18,66 +18,6 @@ Object.defineProperty(HTMLElement.prototype, "scrollIntoView", {
   writable: true,
 });
 
-const additionalMessage = {
-  id: 1750340096400,
-  role: "assistant",
-  time: "16:36",
-  content:
-    "🌤️ La Brăila, temperatura se va menține constantă la 32°C în următoarele ore, iar UV Index-ul este de aproximativ 3.34, ceea ce înseamnă că protecția solară este recomandată, dar nu obligatorie. Vântul ușor de 9 km/h va face atmosfera mai plăcută. Ideal ar fi să planifici activități în aer liber în jurul orelor 17:00 și 18:00, când temperatura rămâne constantă, dar asigură-te că te hidratezi corespunzător! 💧",
-  recommendation: {
-    title: "🕒 Planificare Activități:",
-    text: "Exersează sporturi ușoare sau plimbări între 17:00-19:00.",
-  },
-  additional_tips: [
-    {
-      id: 1,
-      type: "activity",
-      icon: "🏞️",
-      title: "Parcul Monumentului",
-      content:
-        "Vizitează Parcul Monumentului pentru o plimbare relaxantă, accesibil pe jos.",
-      confidence: 90,
-      bgColor: "bg-purple-50",
-      borderColor: "border-l-purple-500",
-      iconBg: "bg-white/70",
-    },
-    {
-      id: 2,
-      type: "activity",
-      icon: "🌳",
-      title: "Grădina Mare",
-      content: "Grădina Mare este perfectă pentru un picnic după ora 18:00.",
-      confidence: 85,
-      bgColor: "bg-purple-50",
-      borderColor: "border-l-purple-500",
-      iconBg: "bg-white/70",
-    },
-    {
-      id: 3,
-      type: "health",
-      icon: "💧",
-      title: "Hidratare Adequată",
-      content: "Bea cel puțin 2-2.5L apă pe zi pentru a te menține hidratat.",
-      confidence: 96,
-      bgColor: "bg-emerald-50",
-      borderColor: "border-l-emerald-500",
-      iconBg: "bg-white/70",
-    },
-    {
-      id: 4,
-      type: "info",
-      icon: "👕",
-      title: "Îmbrăcăminte Lejeră",
-      content:
-        "Alege tricouri din bumbac și pantaloni scurți pentru confort maxim.",
-      confidence: 90,
-      bgColor: "bg-blue-50",
-      borderColor: "border-l-blue-500",
-      iconBg: "bg-white/70",
-    },
-  ],
-  confidence: "...% ",
-};
 const mockQuickActions = [
   "🌡️ Analize ale vremii actuale",
   "👕 Recomandări de îmbrăcăminte",

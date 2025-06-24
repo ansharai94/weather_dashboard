@@ -70,7 +70,7 @@ describe("invokeOpenAi Server Action", () => {
       vi.mocked(openai.chat.completions.create).mockResolvedValue(
         mockOpenAISuccessResponse
       );
-      const result = await invokeOpenAi(mockSystemMessage, mockUserMessages);
+      await invokeOpenAi(mockSystemMessage, mockUserMessages);
     });
     it("should call OpenAi with correct parameters", async () => {
       vi.mocked(openai.chat.completions.create).mockResolvedValue(

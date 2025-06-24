@@ -16,6 +16,7 @@ vi.mock("framer-motion", async (importOriginal: ImportOriginal) => {
 });
 
 vi.mock("@/components/ai/weather-assistant", () => ({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   WeatherAssistant: ({ weatherData, messages, setMessages }: any) => (
     <div data-testid="weather-assistant">
       <span data-testid="weather-data">{weatherData?.location}</span>
@@ -53,6 +54,7 @@ vi.mock("@/components/ai/weather-assistant", () => ({
 }));
 
 vi.mock("@/components/ai/animated-weather-insights", () => ({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   AnimatedWeatherInsights: ({ insights, showInsights, isLoading }: any) => (
     <div data-testid="animated-weather-insights">
       <span data-testid="insights-count">{insights?.length || 0}</span>
@@ -63,7 +65,7 @@ vi.mock("@/components/ai/animated-weather-insights", () => ({
 }));
 
 vi.mock("@/components/ai/empty-insights", () => ({
-  EmptyInsightsState: ({ isLoading }: any) => (
+  EmptyInsightsState: ({ isLoading }: { isLoading: boolean }) => (
     <div data-testid="empty-insights-state">
       <span data-testid="empty-loading">{String(isLoading)}</span>
     </div>
@@ -71,7 +73,7 @@ vi.mock("@/components/ai/empty-insights", () => ({
 }));
 
 vi.mock("@/components/ai/floating-message", () => ({
-  FloatingMessage: ({ message }: any) => (
+  FloatingMessage: ({ message }: { message?: { content: string } }) => (
     <div data-testid="floating-message">
       <span data-testid="floating-content">{message?.content}</span>
     </div>
@@ -79,7 +81,13 @@ vi.mock("@/components/ai/floating-message", () => ({
 }));
 
 vi.mock("@/components/ai/animated-container", () => ({
-  AnimatedContainer: ({ isVisible, children }: any) => (
+  AnimatedContainer: ({
+    isVisible,
+    children,
+  }: {
+    isVisible: boolean;
+    children: React.ReactNode;
+  }) => (
     <div data-testid="animated-container" data-visible={isVisible}>
       {children}
     </div>
