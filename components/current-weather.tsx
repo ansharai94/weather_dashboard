@@ -15,7 +15,7 @@ export function CurrentWeather({ location, current }: ICurrentWeather) {
         </div>
 
         <div className="text-6xl font-light text-blue-500 mb-6">
-          {current?.temp}°C
+          {`${current?.temp}°C`}
         </div>
 
         <div className="grid grid-cols-2 gap-4 text-sm">
@@ -23,21 +23,21 @@ export function CurrentWeather({ location, current }: ICurrentWeather) {
             <Wind className="w-4 h-4 text-gray-500" />
             <div>
               <div className="text-gray-600">Vânt</div>
-              <div className="font-semibold">{current.wind_speed} km/h</div>
+              <div className="font-semibold">{`${current.wind_speed} km/h`}</div>
             </div>
           </div>
           <div className="flex items-center gap-2">
             <Droplets className="w-4 h-4 text-blue-500" />
             <div>
               <div className="text-gray-600">Umiditate</div>
-              <div className="font-semibold">{current?.humidity}%</div>
+              <div className="font-semibold">{`${current?.humidity}%`}</div>
             </div>
           </div>
           <div className="flex items-center gap-2">
             <Thermometer className="w-4 h-4 text-red-500" />
             <div>
               <div className="text-gray-600">Senzație</div>
-              <div className="font-semibold">{current.feels_like}°C</div>
+              <div className="font-semibold">{`${current.feels_like}°C`}</div>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -45,7 +45,7 @@ export function CurrentWeather({ location, current }: ICurrentWeather) {
             <div>
               <div className="text-gray-600">Vizibilitate</div>
               <div className="font-semibold">
-                {current.visibility / 1000} km
+                {`${current.visibility / 1000} km`}
               </div>
             </div>
           </div>

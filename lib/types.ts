@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 export interface ICurrentWeather {
   location: string;
   current: Current;
@@ -360,4 +362,22 @@ export interface Message {
   additional_tips?: IAdditionalTips[];
   confidence?: string;
   warning?: string;
+}
+
+export interface CommonProps {
+  className?: string;
+  children?: ReactNode;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any; // Pentru props-uri adiționale
+}
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type ImportOriginal<T = any> = () => Promise<T>;
+
+export type PrecipitationType = "snow" | "sleet" | "rain" | "none";
+
+export interface ProcessedPrecipitationData {
+  labels: string[];
+  precipitationProbability: number[];
+  precipitationTypes: PrecipitationType[];
+  estimatedPrecipitation: number[];
 }

@@ -51,7 +51,7 @@ export function MotionInsights({ insights, showInsights }: MotionInsights) {
               {insight.content}
             </p>
             <div className="text-xs font-semibold text-blue-600">
-              Încredere: {insight.confidence}%
+              {`Încredere: ${insight.confidence}%`}
             </div>
           </div>
         </motion.div>

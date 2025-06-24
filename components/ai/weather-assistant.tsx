@@ -3,7 +3,7 @@ import { formatWeatherContext, parseAndValidateJSON } from "@/lib/utils";
 import { Dispatch, SetStateAction, useRef } from "react";
 import { Message, WeatherForecastResponse } from "@/lib/types";
 
-interface WeatherAssistant {
+export interface WeatherAssistant {
   weatherData: WeatherForecastResponse;
   messages: Message[];
   setMessages: Dispatch<SetStateAction<Message[]>>;
@@ -51,6 +51,7 @@ export function WeatherAssistant({
     scrollToBottom();
     setInputValue("");
     try {
+      console.log(weatherData, "weatherData");
       const weatherContext = formatWeatherContext(weatherData);
       // Fix the message handling logic
       const conversationHistory = messages
@@ -65,6 +66,7 @@ export function WeatherAssistant({
         { role: "system", content: weatherContext },
         [...conversationHistory, { role: "user", content: newMessage.content }]
       );
+
       const parsed = parseAndValidateJSON(response.message?.content);
       const aiResponse: Message = {
         id: Date.now() + 1,
@@ -96,7 +98,6 @@ export function WeatherAssistant({
       setIsTyping(false);
     }
   };
-
   const handleQuickAction = (action: string) => {
     handleSendMessage(action.substring(2)); // Remove emoji prefix
   };

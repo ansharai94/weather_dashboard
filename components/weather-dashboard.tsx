@@ -44,7 +44,6 @@ export default function WeatherDashboard() {
       });
     }
   };
-  console.log(isLoading, "isLoading");
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600 p-4">
       {/* Header */}

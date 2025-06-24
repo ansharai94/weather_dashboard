@@ -95,6 +95,7 @@ async function getLocationName({ lat, lon }: Geolocation) {
   }
   const data = await response.json();
   console.log(data, "data");
+
   if (data.length > 0) {
     return `${data[0].name}, ${data[0].country}`;
   }

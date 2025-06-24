@@ -41,7 +41,7 @@ export function FloatingMessage({ message }: FloatingMessageProps) {
           </div>
           <div className="flex-1">
             <div className="bg-gray-100 text-gray-800 px-3 py-2 rounded-xl text-sm">
-              {message.content?.substring(0, 100)}...
+              {`${message.content?.substring(0, 100)}...`}
             </div>
             {message.recommendation && (
               <div className="mt-2 bg-blue-50 border-l-2 border-blue-400 p-2 rounded text-xs">

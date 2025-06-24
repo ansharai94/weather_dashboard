@@ -1,7 +1,7 @@
 import { CloudRain } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent } from "./ui/card";
 import { WeatherHourly } from "@/lib/types";
-import { PrecipitationBarCart } from "./charts/precipitation-chart";
+import { PrecipitationBarChart } from "./charts/precipitation-bar-chart";
 
 interface PrecipitationChart {
   forecastData: WeatherHourly[];
@@ -14,7 +14,7 @@ export function PrecipitationChart({ forecastData }: PrecipitationChart) {
         <CardTitle className="text-gray-800">Precipitații</CardTitle>
       </CardHeader>
       <CardContent className="p-6">
-        <PrecipitationBarCart forecastData={forecastData} />
+        <PrecipitationBarChart forecastData={forecastData} />
       </CardContent>
     </Card>
   );

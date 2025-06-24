@@ -1,15 +1,7 @@
-import { WeatherHourly } from "@/lib/types";
+import { PrecipitationType, WeatherHourly } from "@/lib/types";
 import { getTime } from "@/lib/utils";
 import { ChartOptions } from "chart.js";
 
-export type PrecipitationType = "snow" | "sleet" | "rain" | "none";
-
-export interface ProcessedPrecipitationData {
-  labels: string[];
-  precipitationProbability: number[];
-  precipitationTypes: PrecipitationType[];
-  estimatedPrecipitation: number[];
-}
 export function generatePrecipitationChartProps(
   labels: string[],
   precipitationProbability: number[],
@@ -178,8 +170,6 @@ export function calcEstimatedPrecipitation(
     case "sleet":
       baseAmount = pop * 4; // Lapoviță
       break;
-    default:
-      baseAmount = 0;
   }
 
   return Number(baseAmount.toFixed(1));

@@ -36,6 +36,7 @@ export async function invokeOpenAi(
         ...messages,
       ],
     });
+
     return {
       status: 200,
       message: response.choices[0].message,
