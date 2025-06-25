@@ -523,14 +523,6 @@ npm run build
 npx tsc --noEmit
 ```
 
-### **Getting Help**
-
-- 📧 **Email**: your-email@example.com
-- 🐛 **Issues**: [GitHub Issues](https://github.com/your-username/weather-dashboard/issues)
-- 💬 **Discussions**: [GitHub Discussions](https://github.com/your-username/weather-dashboard/discussions)
-
----
-
 ## 📄 License
 
 This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
